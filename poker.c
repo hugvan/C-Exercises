@@ -7,7 +7,7 @@
 #define HAND_LEN 5
 
 int find(char arr[], int size, int obj);
-int find_int(int arr[], int size, int obj);
+int count(int arr[], int size, int obj);
 char* get_rank_name(char rank_abbr);
 char* get_suit_name(char suit_abbr);
 
@@ -60,7 +60,7 @@ int main(void) {
         suit_counts[ find(suits, SUIT_LEN, poker_hand[i][1]) ] ++;
     }
 
-    bool is_flush = (find_int(suit_counts, SUIT_LEN, 5) != -1);
+    bool is_flush = count(suit_counts, SUIT_LEN, 5);
     bool is_straight = false;
 
     //Calculate Straight
@@ -84,17 +84,19 @@ int main(void) {
 
     if (is_straight && is_flush) {
         printf("Straight Flush! \n");
-    } else if (find_int(rank_counts, RANK_LEN, 4) != -1 ) {
+    } else if (count(rank_counts, RANK_LEN, 4)) {
         printf("Four of a Kind! \n");
-    } else if (find_int(rank_counts, RANK_LEN, 3) != -1  && find_int(rank_counts, RANK_LEN, 2) != -1  ) {
+    } else if (count(rank_counts, RANK_LEN, 3) && count(rank_counts, RANK_LEN, 2) ) {
         printf("Full House! \n");
     } else if (is_flush) {
         printf("Flush! \n");
     } else if (is_straight) {
         printf("Straight! \n");
-    } else if (find_int(rank_counts, RANK_LEN, 3) != -1 ) {
+    } else if (count(rank_counts, RANK_LEN, 3) ) {
         printf("Three of a Kind! \n");
-    } else if (find_int(rank_counts, RANK_LEN, 2) != -1 ) {
+    } else if (count(rank_counts, RANK_LEN, 2) == 2) {
+        printf("Two Pair! \n");
+    } else if (count(rank_counts, RANK_LEN, 2) ) {
         printf("Pair! \n");
     } else {
         printf("High Card! \n");
@@ -124,12 +126,12 @@ int find(char arr[], int size, int obj) {
     return -1;
 }
 
-int find_int(int arr[], int size, int obj) {
-    
+int count(int arr[], int size, int obj) {
+    int count = 0;
     for (int i = 0; i < size; i++)  {
-        if (arr[i] == obj) {return i; }    
-    } 
-    return -1;
+        if (arr[i] == obj) count++;  
+    }
+    return count;
 }
 
 char* get_rank_name(char rank_abbr) {
